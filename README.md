@@ -1,2 +1,3 @@
 # rocketseat-flask-auth
-API de autenticação com Flask
+
+API simples de autenticação com Flask e Banco de dados
