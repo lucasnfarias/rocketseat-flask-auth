@@ -53,6 +53,49 @@ def create_user():
 
   return jsonify({"message": "Invalid fields."}), 400
 
+@app.route('/user/<int:user_id>', methods=["GET"])
+@login_required
+def read_user(user_id):
+  user = User.query.get(user_id)
+
+  if user:
+      return {"username": user.username}
+
+  return jsonify({"message": "User not found."}), 404
+
+@app.route('/user/<int:user_id>', methods=["PUT"])
+def update_user(user_id):
+  data = request.json
+
+  if not data.get("password"):
+    return jsonify({"message": "Password field not found."}), 400
+
+  user = User.query.get(user_id)
+
+  if user:
+      user.password = data.get("password")
+      db.session.commit()
+
+      return jsonify({"message": f"User {user_id} updated successfully."})
+
+  return jsonify({"message": "User not found."}), 404
+
+@app.route('/user/<int:user_id>', methods=["DELETE"])
+@login_required
+def delete_user(user_id):
+  if user_id == current_user.id:
+    return jsonify({"message": f"Cannot delete current authenticated user: {user_id}"}), 400
+
+  user = User.query.get(user_id)
+
+  if user:
+      db.session.delete(user)
+      db.session.commit()
+
+      return jsonify({"message": f"User {user_id} deleted successfully."})
+
+  return jsonify({"message": "User not found."}), 404
+
 @app.route("/hello-world", methods=["GET"])
 def hello_world():
     return "hello world!"
