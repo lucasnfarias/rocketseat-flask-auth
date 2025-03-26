@@ -13,6 +13,9 @@ flask shell
 
 # create tables
 >>> db.create_all()
+# create user
+>>> user = User(username="lfarias", password="test")
+>>> db.session.add(user)
 # commit your commands
 >>> db.session.commit()
 >>> exit()
