@@ -1,0 +1,16 @@
+services:
+  rs-flask-db:
+    image: mysql
+    container_name: rs-flask-db
+    restart: always
+    environment:
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "admin123"
+      MYSQL_DATABASE: "flask_crud"
+      MYSQL_ROOT_PASSWORD: "admin123"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
